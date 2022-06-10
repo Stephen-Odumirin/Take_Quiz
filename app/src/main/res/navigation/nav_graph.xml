@@ -3,11 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.stdev.takequiz.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.stdev.takequiz.presentation.ui.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.stdev.takequiz.presentation.ui.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.stdev.takequiz.presentation.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

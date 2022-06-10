@@ -1,4 +1,4 @@
-package com.stdev.takequiz.presentation
+package com.stdev.takequiz.presentation.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
