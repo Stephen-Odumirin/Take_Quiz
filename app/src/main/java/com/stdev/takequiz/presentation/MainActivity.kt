@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.stdev.takequiz.R
+import com.stdev.takequiz.data.util.Constants
 import com.stdev.takequiz.databinding.ActivityMainBinding
 import com.stdev.takequiz.presentation.viewmodel.QuizViewModel
 import com.stdev.takequiz.presentation.viewmodel.QuizViewModelFactory
@@ -26,8 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         viewModel = ViewModelProvider(this,factory)[QuizViewModel::class.java]
 
 //        viewModel.getQuiz(10,9,"easy","multiple")
