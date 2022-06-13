@@ -1,4 +1,4 @@
-package com.stdev.takequiz.presentation.viewmodel
+package com.stdev.takequiz.presentation.di
 
 import com.stdev.takequiz.data.api.QuizApiService
 import com.stdev.takequiz.data.repository.QuizRemoteDataSource

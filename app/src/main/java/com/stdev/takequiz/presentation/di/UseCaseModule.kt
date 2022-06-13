@@ -1,7 +1,8 @@
-package com.stdev.takequiz.presentation.viewmodel
+package com.stdev.takequiz.presentation.di
 
 import com.stdev.takequiz.domain.repository.QuizRepository
 import com.stdev.takequiz.domain.usecase.GetQuizUseCase
+import com.stdev.takequiz.domain.usecase.SaveQuizUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +17,12 @@ class UseCaseModule {
     @Provides
     fun providesGetQuizUseCase(quizRepository: QuizRepository) : GetQuizUseCase{
         return GetQuizUseCase(quizRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun providesSaveQuizUseCase(quizRepository: QuizRepository) : SaveQuizUseCase{
+        return SaveQuizUseCase(quizRepository)
     }
 
 }

@@ -2,6 +2,7 @@ package com.stdev.takequiz.presentation.di
 
 import android.app.Application
 import com.stdev.takequiz.domain.usecase.GetQuizUseCase
+import com.stdev.takequiz.domain.usecase.SaveQuizUseCase
 import com.stdev.takequiz.presentation.viewmodel.QuizViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -15,8 +16,8 @@ class FactoryModule {
 
     @Singleton
     @Provides
-    fun providesQuizFactoryModel(app : Application,getQuizUseCase: GetQuizUseCase) : QuizViewModelFactory{
-        return QuizViewModelFactory(app, getQuizUseCase)
+    fun providesQuizFactoryModel(app : Application,getQuizUseCase: GetQuizUseCase,saveQuizUseCase: SaveQuizUseCase) : QuizViewModelFactory{
+        return QuizViewModelFactory(app, getQuizUseCase,saveQuizUseCase)
     }
 
 }

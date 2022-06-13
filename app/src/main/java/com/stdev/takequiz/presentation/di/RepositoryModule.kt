@@ -1,5 +1,6 @@
 package com.stdev.takequiz.presentation.di
 
+import com.stdev.takequiz.data.repository.QuizLocalDataSource
 import com.stdev.takequiz.data.repository.QuizRemoteDataSource
 import com.stdev.takequiz.data.repository.QuizRepositoryImpl
 import com.stdev.takequiz.domain.repository.QuizRepository
@@ -15,8 +16,8 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun providesQuizRepository(quizRemoteDataSource: QuizRemoteDataSource) : QuizRepository{
-        return QuizRepositoryImpl(quizRemoteDataSource = quizRemoteDataSource)
+    fun providesQuizRepository(quizRemoteDataSource: QuizRemoteDataSource,quizLocalDataSource: QuizLocalDataSource) : QuizRepository{
+        return QuizRepositoryImpl(quizRemoteDataSource = quizRemoteDataSource,quizLocalDataSource)
     }
 
 }
