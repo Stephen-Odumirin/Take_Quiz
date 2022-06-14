@@ -18,16 +18,16 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var factory: QuizViewModelFactory
-    private lateinit var viewModel : QuizViewModel
+//    @Inject
+//    lateinit var factory: QuizViewModelFactory
+//    lateinit var viewModel : QuizViewModel
     private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this,factory)[QuizViewModel::class.java]
+//        viewModel = ViewModelProvider(this,factory)[QuizViewModel::class.java]
 
 //        viewModel.getQuiz(10,9,"easy","multiple")
 //        viewModel.getQuiz2(10,9,"easy","multiple")

@@ -22,4 +22,10 @@
     <color name="grey_primary">#7C82A1</color>
     <color name="grey_light">#ACAFC3</color>
     <color name="grey_lighter">#F3F4F6</color>
+
+    <color name="lightGrey">#ededed</color>
+    <color name="specialtextcolor">#212121</color>
+    <color name="red">#ff0000</color>
+    <color name="green">#00ff00</color>
+
 </resources>

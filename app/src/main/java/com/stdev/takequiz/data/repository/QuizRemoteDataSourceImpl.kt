@@ -11,6 +11,7 @@ class QuizRemoteDataSourceImpl(private val apiService: QuizApiService) : QuizRem
         difficulty: String,
         type: String
     ): Response<Quiz> {
+
         return apiService.getQuiz(amount, category, difficulty, type)
     }
 

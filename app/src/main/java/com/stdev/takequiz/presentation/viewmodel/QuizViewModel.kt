@@ -1,6 +1,7 @@
 package com.stdev.takequiz.presentation.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,22 +17,13 @@ class QuizViewModel(
     private val saveQuizUseCase: SaveQuizUseCase
 ) : ViewModel() {
 
-    val quizList : MutableLiveData<List<QuizResult>> = MutableLiveData()
-    val quiz : MutableLiveData<Quiz> = MutableLiveData()
+    private val _quiz : MutableLiveData<Quiz> = MutableLiveData()
+    val quiz : LiveData<Quiz> get() = _quiz
 
-    fun getQuiz(amount : Int, category : Int, difficulty : String,type : String) = viewModelScope.launch {
-        val result = getQuizUseCase.execute(amount, category, difficulty, type)
-        quizList.postValue(result)
-    }
-
-    fun getQuiz2(amount : Int, category : Int, difficulty : String,type : String) = viewModelScope.launch {
+    fun getQuiz(amount : Int, category : Int, difficulty : String, type : String) = viewModelScope.launch {
         val result = getQuizUseCase.execute2(amount, category, difficulty, type)
-        quiz.postValue(result)
+        _quiz.postValue(result)
     }
-
-    //fun saveArticle(article: Article) = viewModelScope.launch {
-    //        saveNewsUseCase.execute(article)
-    //    }
 
     suspend fun saveQuiz(quiz: Quiz) = viewModelScope.launch {
         saveQuizUseCase.execute(quiz)

@@ -12,7 +12,7 @@ import retrofit2.http.GET
 interface QuizDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveQuiz(quiz : Quiz)
+    fun saveQuiz(quiz : Quiz)
 
     @Query("select * from quiz_list")
     fun getQuiz() : Flow<List<Quiz>>

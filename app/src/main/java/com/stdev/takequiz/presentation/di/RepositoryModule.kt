@@ -17,7 +17,7 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun providesQuizRepository(quizRemoteDataSource: QuizRemoteDataSource,quizLocalDataSource: QuizLocalDataSource) : QuizRepository{
-        return QuizRepositoryImpl(quizRemoteDataSource = quizRemoteDataSource,quizLocalDataSource)
+        return QuizRepositoryImpl(quizRemoteDataSource,quizLocalDataSource)
     }
 
 }

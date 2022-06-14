@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.stdev.takequiz.R
 import com.stdev.takequiz.data.model.Category
@@ -19,7 +20,7 @@ import com.stdev.takequiz.databinding.BottomDialogBinding
 class BottomDialog : BottomSheetDialogFragment() {
 
     private lateinit var binding : BottomDialogBinding
-    private var difficulty = "any"
+    private var difficulty = "easy"
     private var type = "multiple"
     private var questions = 10
     private lateinit var category: Category
@@ -63,7 +64,8 @@ class BottomDialog : BottomSheetDialogFragment() {
                 questions = _question.toInt()
             }
             if (questions!=0 && questions<=50){
-                Toast.makeText(context,"$difficulty,$type,$questions",Toast.LENGTH_SHORT).show()
+                val action = BottomDialogDirections.actionBottomDialogToQuizFragment(category,difficulty,type,questions.toString())
+                findNavController().navigate(action)
             } else{
                 Toast.makeText(context,"Enter a number between 1-50", Toast.LENGTH_SHORT).show()
             }

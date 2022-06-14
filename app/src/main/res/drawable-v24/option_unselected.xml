@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/purple_200">
+    <item android:id="@+id/mask">
+        <selector android:layout_width="match_parent">
+            <item android:drawable="@drawable/bg_translucent" />
+        </selector>
+    </item>
+</ripple>
