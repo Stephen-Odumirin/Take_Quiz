@@ -4,7 +4,6 @@ import com.stdev.takequiz.data.model.Quiz
 import com.stdev.takequiz.data.model.QuizResult
 import com.stdev.takequiz.domain.repository.QuizRepository
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 class QuizRepositoryImpl(private val quizRemoteDataSource: QuizRemoteDataSource,private val quizLocalDataSource: QuizLocalDataSource) : QuizRepository {
     override suspend fun getQuiz(amount: Int, category: Int, difficulty: String, type: String): List<QuizResult> {
@@ -20,10 +19,9 @@ class QuizRepositoryImpl(private val quizRemoteDataSource: QuizRemoteDataSource,
         return quizLocalDataSource.getQuiz()
     }
 
-    override suspend fun getQuiz2(amount: Int, category: Int, difficulty: String, type: String): Quiz? {
+    override suspend fun getQuiz2(amount: Int, category: Int, difficulty: String, type: String): Quiz {
         val response = quizRemoteDataSource.getQuiz(amount, category, difficulty, type)
-        val body = response.body()
-        return body
+        return response.body() ?: Quiz(0, 2, listOf())
     }
 
     suspend fun getQuizFromApi(amount: Int, category: Int, difficulty: String, type: String) : List<QuizResult>{

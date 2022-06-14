@@ -11,7 +11,7 @@ class GetQuizUseCase(private val quizRepository: QuizRepository) {
         return quizRepository.getQuiz(amount, category, difficulty, type)
     }
 
-    suspend fun execute2(amount : Int,category : Int,difficulty : String,type : String) : Quiz?{
+    suspend fun execute2(amount : Int,category : Int,difficulty : String,type : String) : Quiz{
         return quizRepository.getQuiz2(amount, category, difficulty, type)
     }
 

@@ -17,7 +17,7 @@ class FactoryModule {
     @Singleton
     @Provides
     fun providesQuizFactoryModel(app : Application,getQuizUseCase: GetQuizUseCase,saveQuizUseCase: SaveQuizUseCase) : QuizViewModelFactory{
-        return QuizViewModelFactory(app, getQuizUseCase,saveQuizUseCase)
+        return QuizViewModelFactory(getQuizUseCase, saveQuizUseCase)
     }
 
 }

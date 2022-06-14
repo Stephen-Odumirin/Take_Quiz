@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.stdev.takequiz.domain.usecase.GetQuizUseCase
 import com.stdev.takequiz.domain.usecase.SaveQuizUseCase
 
-class QuizViewModelFactory(private val app : Application,private val getQuizUseCase: GetQuizUseCase,private val saveQuizUseCase: SaveQuizUseCase) : ViewModelProvider.Factory {
+class QuizViewModelFactory(
+    private val getQuizUseCase: GetQuizUseCase,
+    private val saveQuizUseCase: SaveQuizUseCase
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return QuizViewModel(app, getQuizUseCase,saveQuizUseCase) as T
+        return QuizViewModel(getQuizUseCase, saveQuizUseCase) as T
     }
 
 }
