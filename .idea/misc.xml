@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/layout/bottom_dialog.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.45" />
         <entry key="app/src/main/res/layout/fragment_quiz.xml" value="0.2947916666666667" />
+        <entry key="app/src/main/res/layout/fragment_saved_quiz.xml" value="0.2931726907630522" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.29025641025641025" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/single_list_item.xml" value="0.28923076923076924" />

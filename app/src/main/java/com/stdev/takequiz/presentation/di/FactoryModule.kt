@@ -1,9 +1,8 @@
 package com.stdev.takequiz.presentation.di
 
-import android.app.Application
-import com.stdev.takequiz.domain.usecase.GetQuizUseCase
-import com.stdev.takequiz.domain.usecase.SaveQuizUseCase
+import com.stdev.takequiz.domain.usecase.*
 import com.stdev.takequiz.presentation.viewmodel.QuizViewModelFactory
+import com.stdev.takequiz.presentation.viewmodel.SavedQuizViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +15,14 @@ class FactoryModule {
 
     @Singleton
     @Provides
-    fun providesQuizFactoryModel(app : Application,getQuizUseCase: GetQuizUseCase,saveQuizUseCase: SaveQuizUseCase) : QuizViewModelFactory{
-        return QuizViewModelFactory(getQuizUseCase, saveQuizUseCase)
+    fun providesQuizFactoryModel(getQuizUseCase: GetQuizUseCase, saveQuizUseCase: SaveQuizUseCase,getQuizWithIdUseCase: GetQuizWithIdUseCase) : QuizViewModelFactory{
+        return QuizViewModelFactory(getQuizUseCase, saveQuizUseCase,getQuizWithIdUseCase)
+    }
+
+    @Singleton
+    @Provides
+    fun providesSavedQuizFactoryModel(getSavedQuizUseCase: GetSavedQuizUseCase,deleteQuizUseCase: DeleteQuizUseCase,saveQuizUseCase: SaveQuizUseCase) : SavedQuizViewModelFactory{
+        return SavedQuizViewModelFactory(getSavedQuizUseCase, deleteQuizUseCase,saveQuizUseCase)
     }
 
 }

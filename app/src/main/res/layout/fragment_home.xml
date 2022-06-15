@@ -12,7 +12,7 @@
         android:id="@+id/home_text_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Good morning"
         android:textColor="@color/grey_lighter"
@@ -78,5 +78,25 @@
             tools:listitem="@layout/single_list_item" />
 
     </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/home_saved_quiz_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="@color/white"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        android:text=" View Saved Quiz  📬 "
+        android:textAllCaps="false"
+        android:textColor="@color/purple_primary"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/home_text_welcome"
+        app:strokeColor="@color/grey_lighter"
+        app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

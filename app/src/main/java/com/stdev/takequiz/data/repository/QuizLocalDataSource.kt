@@ -9,4 +9,7 @@ interface QuizLocalDataSource {
 
     fun getQuiz() : Flow<List<Quiz>>
 
+    suspend fun deleteQuiz(quiz: Quiz)
+
+    suspend fun getQuizWithID(id : Long) : Quiz
 }

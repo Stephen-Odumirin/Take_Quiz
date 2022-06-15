@@ -7,11 +7,7 @@ import retrofit2.Response
 
 class GetQuizUseCase(private val quizRepository: QuizRepository) {
 
-    suspend fun execute(amount : Int,category : Int,difficulty : String,type : String) : List<QuizResult>{
-        return quizRepository.getQuiz(amount, category, difficulty, type)
-    }
-
-    suspend fun execute2(amount : Int,category : Int,difficulty : String,type : String) : Quiz{
+    suspend fun execute(amount : Int, category : Int, difficulty : String, type : String) : Quiz{
         return quizRepository.getQuiz2(amount, category, difficulty, type)
     }
 

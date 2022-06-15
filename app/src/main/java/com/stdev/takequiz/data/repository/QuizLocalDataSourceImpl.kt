@@ -12,4 +12,12 @@ class QuizLocalDataSourceImpl(private val quizDao: QuizDao) : QuizLocalDataSourc
     override fun getQuiz(): Flow<List<Quiz>> {
         return quizDao.getQuiz()
     }
+
+    override suspend fun deleteQuiz(quiz: Quiz) {
+        quizDao.deleteQuiz(quiz)
+    }
+
+    override suspend fun getQuizWithID(id: Long) : Quiz{
+        return quizDao.getQuizWithID(id)
+    }
 }

@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_homeFragment_to_quizFragment"
             app:destination="@id/quizFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_savedQuizFragment"
+            app:destination="@id/savedQuizFragment" />
     </fragment>
     <dialog
         android:id="@+id/bottomDialog"
@@ -58,19 +61,41 @@
         tools:layout="@layout/fragment_quiz" >
         <argument
             android:name="category"
-            app:argType="com.stdev.takequiz.data.model.Category" />
+            app:argType="com.stdev.takequiz.data.model.Category"
+            app:nullable="true" />
         <argument
             android:name="difficulty"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="type"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="questions"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_quizFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment" />
+        <argument
+            android:name="fromdb"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="id"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedQuizFragment"
+        android:name="com.stdev.takequiz.presentation.ui.SavedQuizFragment"
+        android:label="SavedQuizFragment"
+        tools:layout="@layout/fragment_saved_quiz">
+        <action
+            android:id="@+id/action_savedQuizFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
     </fragment>
 </navigation>

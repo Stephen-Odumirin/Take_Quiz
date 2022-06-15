@@ -1,28 +1,27 @@
 package com.stdev.takequiz.presentation.ui
 
 import android.os.Bundle
-import android.text.Html
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.stdev.takequiz.R
 import com.stdev.takequiz.data.model.Category
-import com.stdev.takequiz.data.model.Question
-import com.stdev.takequiz.data.model.Quiz
-import com.stdev.takequiz.data.model.QuizResult
 import com.stdev.takequiz.databinding.FragmentQuizBinding
 import com.stdev.takequiz.presentation.viewmodel.QuizViewModel
 import com.stdev.takequiz.presentation.viewmodel.QuizViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,17 +33,21 @@ class QuizFragment : Fragment(),View.OnClickListener{
     private lateinit var binding : FragmentQuizBinding
 
     private lateinit var category : Category
-    private var difficulty = "any"
+    private var difficulty = ""
     private var type = "multiple"
     private var questions = 10
+    private var fromDb = false
+    private var quizid = "0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        category = QuizFragmentArgs.fromBundle(requireArguments()).category
-        difficulty = QuizFragmentArgs.fromBundle(requireArguments()).difficulty
-        type = QuizFragmentArgs.fromBundle(requireArguments()).type
-        questions = QuizFragmentArgs.fromBundle(requireArguments()).questions.toInt()
+        fromDb = QuizFragmentArgs.fromBundle(requireArguments()).fromdb
+        quizid = QuizFragmentArgs.fromBundle(requireArguments()).id ?: "0"
+        category = QuizFragmentArgs.fromBundle(requireArguments()).category ?: Category(0,"")
+        difficulty = QuizFragmentArgs.fromBundle(requireArguments()).difficulty ?: ""
+        type = QuizFragmentArgs.fromBundle(requireArguments()).type ?: "multiple"
+        questions = QuizFragmentArgs.fromBundle(requireArguments()).questions?.toInt() ?: 0
 
 
     }
@@ -74,20 +77,24 @@ class QuizFragment : Fragment(),View.OnClickListener{
     }
 
     private fun viewModelShits(){
-        viewModel.status.observe(viewLifecycleOwner) {
-            if (!it) {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Error")
-                    .setMessage("There aren't sufficient questions in the database. Try reducing the number of questions and try again. ): ")
-                    .setCancelable(false)
-                    .setPositiveButton("Okay") { _, _ ->
-                        findNavController().navigate(R.id.action_quizFragment_to_homeFragment)
-                    }
-                    .show()
+        if (fromDb){
+            viewModel.getQuizFromDb(quizid)
+        }else{
+            viewModel.status.observe(viewLifecycleOwner) {
+                if (!it) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Error")
+                        .setMessage("There aren't sufficient questions in the database. Try reducing the number of questions and try again. ): ")
+                        .setCancelable(false)
+                        .setPositiveButton("Okay") { _, _ ->
+                            findNavController().navigate(R.id.action_quizFragment_to_homeFragment)
+                        }
+                        .show()
+                }
             }
+            viewModel.getQuiz(questions, category.id, difficulty, type)
         }
 
-        viewModel.getQuiz(questions, category.id, difficulty, type)
 
         viewModel.currentQuiz.observe(viewLifecycleOwner) {
             clear()
@@ -99,7 +106,7 @@ class QuizFragment : Fragment(),View.OnClickListener{
         }
 
         viewModel.currentQuestion.observe(viewLifecycleOwner) {
-            binding.quizQuestionNo.text = "Question $it/$questions"
+            binding.quizQuestionNo.text = "Question $it/${viewModel.questionList2.value?.size}"
         }
 
         viewModel.buttonText.observe(viewLifecycleOwner) {
@@ -127,14 +134,26 @@ class QuizFragment : Fragment(),View.OnClickListener{
     }
 
     private fun showResult(){
+        val date: Date = Calendar.getInstance().time
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm:ss")
+        val strDate: String = dateFormat.format(date)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Your Result")
-            .setMessage("You answered ${viewModel.correctAnswers.value} question(s) correctly out of $questions questions. \nKeep it up")
-            .setPositiveButton("Try again"){_,_->
+            .setMessage("You answered ${viewModel.correctAnswers.value} question(s) correctly out of ${viewModel.questionList2.value?.size} questions. \nKeep it up")
+            .setPositiveButton("Exit"){_,_->
+                findNavController().navigateUp()
+            }.setNegativeButton("Try Again"){_,_->
                 viewModel.startAgain()
                 viewModelShits()
-            }.setNegativeButton("Exit"){_,_->
-                findNavController().navigateUp()
+            }
+            .setNeutralButton("Save Quiz"){_,_->
+                //lifecycleScope.launch(IO) {
+                if (fromDb){
+                    findNavController().navigateUp()
+                }else{
+                    viewModel.saveQuiz(category.name)
+                    findNavController().navigateUp()
+                }
             }
             .setCancelable(false)
             .show()
@@ -143,7 +162,7 @@ class QuizFragment : Fragment(),View.OnClickListener{
     override fun onClick(view: View?) {
         when(view?.id){
             binding.quizNextButton.id -> {
-                if (viewModel.currentQuestion.value == questions){
+                if (viewModel.currentQuestion.value == viewModel.questionList2.value?.size){
                     viewModel.endQuiz()
                     showResult()
                     //Toast.makeText(requireContext(),"Correct answers ${viewModel.correctAnswers.value}",Toast.LENGTH_SHORT).show()

@@ -40,7 +40,6 @@ import com.stdev.takequiz.presentation.adapter.HomeAdapter
 
 class HomeFragment : Fragment() {
 
-
     private lateinit var binding : FragmentHomeBinding
     private lateinit var homeAdapter: HomeAdapter
 
@@ -61,6 +60,10 @@ class HomeFragment : Fragment() {
         binding.homeRandomQuizButton.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToBottomDialog(category_random)//Category(0,""),"", type_one,"10"
             findNavController().navigate(action)
+        }
+
+        binding.homeSavedQuizButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_savedQuizFragment)
         }
 
     }

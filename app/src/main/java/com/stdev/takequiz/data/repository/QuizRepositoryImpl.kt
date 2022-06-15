@@ -21,7 +21,15 @@ class QuizRepositoryImpl(private val quizRemoteDataSource: QuizRemoteDataSource,
 
     override suspend fun getQuiz2(amount: Int, category: Int, difficulty: String, type: String): Quiz {
         val response = quizRemoteDataSource.getQuiz(amount, category, difficulty, type)
-        return response.body() ?: Quiz(0, 2, listOf())
+        return response.body() ?: Quiz(0, "",2, listOf())
+    }
+
+    override suspend fun deleteQuizFromDb(quiz: Quiz) {
+        quizLocalDataSource.deleteQuiz(quiz)
+    }
+
+    override suspend fun getQuizWithID(id: Long) : Quiz {
+        return quizLocalDataSource.getQuizWithID(id)
     }
 
     suspend fun getQuizFromApi(amount: Int, category: Int, difficulty: String, type: String) : List<QuizResult>{

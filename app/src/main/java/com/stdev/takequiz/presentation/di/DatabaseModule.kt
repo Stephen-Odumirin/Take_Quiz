@@ -3,6 +3,7 @@ package com.stdev.takequiz.presentation.di
 import android.app.Application
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
 import com.stdev.takequiz.data.db.QuizDao
 import com.stdev.takequiz.data.db.QuizDatabase
 import dagger.Module
@@ -19,7 +20,7 @@ class DatabaseModule {
     @Provides
     fun providesQuizDatabase(app : Application) : QuizDatabase{
         return Room.databaseBuilder(app,QuizDatabase::class.java,"quiz_database")
-            //need to learn about migrations
+            .fallbackToDestructiveMigration()
             .build()
     }
 

@@ -11,5 +11,7 @@ interface QuizRepository {
     suspend fun saveQuiz(quiz : Quiz)
     fun getQuizFromDb() : Flow<List<Quiz>>
     suspend fun getQuiz2(amount: Int, category: Int, difficulty: String, type: String): Quiz
+    suspend fun deleteQuizFromDb(quiz: Quiz)
+    suspend fun getQuizWithID(id : Long) : Quiz
 
 }

@@ -14,12 +14,14 @@ import com.stdev.takequiz.data.model.Quiz
 import com.stdev.takequiz.data.model.QuizResult
 import com.stdev.takequiz.data.util.Constants
 import com.stdev.takequiz.domain.usecase.GetQuizUseCase
+import com.stdev.takequiz.domain.usecase.GetQuizWithIdUseCase
 import com.stdev.takequiz.domain.usecase.SaveQuizUseCase
 import kotlinx.coroutines.launch
 
 class QuizViewModel(
     private val getQuizUseCase: GetQuizUseCase,
-    private val saveQuizUseCase: SaveQuizUseCase
+    private val saveQuizUseCase: SaveQuizUseCase,
+    private val getQuizWithIdUseCase: GetQuizWithIdUseCase
 ) : ViewModel() {
 
     private val _quiz : MutableLiveData<Quiz> = MutableLiveData()
@@ -42,6 +44,7 @@ class QuizViewModel(
     private val _questionList : MutableLiveData<List<QuizResult>> = MutableLiveData()
 
     private val _questionList2 : MutableLiveData<MutableList<Question>> = MutableLiveData()
+    val questionList2 : LiveData<MutableList<Question>> get() = _questionList2
 
     private val _status : MutableLiveData<Boolean> = MutableLiveData()
     val status : LiveData<Boolean> get() = _status
@@ -64,8 +67,25 @@ class QuizViewModel(
         _questionList2.value = mutableListOf()
     }
 
+    fun getQuizFromDb(id : String) = viewModelScope.launch {
+        _quiz.value = getQuizWithIdUseCase.execute(id.toLong())
+        if(_quiz.value != null){
+            if (_quiz.value?.responseCode == 0){
+                _status.value = true
+                _questionList.value = _quiz.value?.results
+                _quizType.value = _quiz.value!!.results[0].type == Constants.type_one
+                convertFromQuizResultToQuestions()
+                nextQuestion()
+            }else{
+                _status.value = false
+            }
+        }else{
+            _status.value = false
+        }
+    }
+
     fun getQuiz(amount : Int, category : Int, difficulty : String, type : String) = viewModelScope.launch {
-        val result = getQuizUseCase.execute2(amount, category, difficulty, type)
+        val result = getQuizUseCase.execute(amount, category, difficulty, type)
         _quiz.value = result
         if(_quiz.value != null){
             if (_quiz.value?.responseCode == 0){
@@ -80,7 +100,6 @@ class QuizViewModel(
         }else{
             _status.value = false
         }
-
     }
 
     fun startAgain(){
@@ -93,7 +112,8 @@ class QuizViewModel(
         _questionList2.value = mutableListOf()
     }
 
-    suspend fun saveQuiz(quiz: Quiz) = viewModelScope.launch {
+    fun saveQuiz(name : String) = viewModelScope.launch {
+        val quiz = Quiz(name = name, responseCode = 0, results = quiz.value!!.results)
         saveQuizUseCase.execute(quiz)
     }
 
