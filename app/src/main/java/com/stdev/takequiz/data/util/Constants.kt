@@ -4,6 +4,7 @@ import com.stdev.takequiz.data.model.Category
 
 object Constants {
 
+    val category_random = Category(0,"Random Quiz")
     val category_one = Category(9,"General Knowledge")
     val category_two = Category(10,"Books")
     val category_three = Category(11,"Movies")

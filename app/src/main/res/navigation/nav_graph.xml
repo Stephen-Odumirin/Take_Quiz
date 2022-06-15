@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_homeFragment_to_bottomDialog"
             app:destination="@id/bottomDialog" />
+        <action
+            android:id="@+id/action_homeFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
     </fragment>
     <dialog
         android:id="@+id/bottomDialog"

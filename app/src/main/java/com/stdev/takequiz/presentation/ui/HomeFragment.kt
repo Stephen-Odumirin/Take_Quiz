@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.stdev.takequiz.R
+import com.stdev.takequiz.data.model.Category
 import com.stdev.takequiz.data.util.Constants.category_eight
 import com.stdev.takequiz.data.util.Constants.category_eighteen
 import com.stdev.takequiz.data.util.Constants.category_eleven
@@ -18,6 +19,7 @@ import com.stdev.takequiz.data.util.Constants.category_fourteen
 import com.stdev.takequiz.data.util.Constants.category_nine
 import com.stdev.takequiz.data.util.Constants.category_nineteen
 import com.stdev.takequiz.data.util.Constants.category_one
+import com.stdev.takequiz.data.util.Constants.category_random
 import com.stdev.takequiz.data.util.Constants.category_seven
 import com.stdev.takequiz.data.util.Constants.category_seventeen
 import com.stdev.takequiz.data.util.Constants.category_six
@@ -32,6 +34,7 @@ import com.stdev.takequiz.data.util.Constants.category_twenty_one
 import com.stdev.takequiz.data.util.Constants.category_twenty_three
 import com.stdev.takequiz.data.util.Constants.category_twenty_two
 import com.stdev.takequiz.data.util.Constants.category_two
+import com.stdev.takequiz.data.util.Constants.type_one
 import com.stdev.takequiz.databinding.FragmentHomeBinding
 import com.stdev.takequiz.presentation.adapter.HomeAdapter
 
@@ -54,6 +57,11 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.bind(view)
         setUpRecyclerView()
+
+        binding.homeRandomQuizButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToBottomDialog(category_random)//Category(0,""),"", type_one,"10"
+            findNavController().navigate(action)
+        }
 
     }
 

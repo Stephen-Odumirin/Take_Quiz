@@ -12,6 +12,7 @@ import com.stdev.takequiz.R
 import com.stdev.takequiz.data.model.Question
 import com.stdev.takequiz.data.model.Quiz
 import com.stdev.takequiz.data.model.QuizResult
+import com.stdev.takequiz.data.util.Constants
 import com.stdev.takequiz.domain.usecase.GetQuizUseCase
 import com.stdev.takequiz.domain.usecase.SaveQuizUseCase
 import kotlinx.coroutines.launch
@@ -41,7 +42,6 @@ class QuizViewModel(
     private val _questionList : MutableLiveData<List<QuizResult>> = MutableLiveData()
 
     private val _questionList2 : MutableLiveData<MutableList<Question>> = MutableLiveData()
-    val questionList2 : LiveData<MutableList<Question>> get() = _questionList2
 
     private val _status : MutableLiveData<Boolean> = MutableLiveData()
     val status : LiveData<Boolean> get() = _status
@@ -50,6 +50,9 @@ class QuizViewModel(
     val buttonText : LiveData<String>  get() = _buttonText
 
     private val _isFinished : MutableLiveData<Boolean> = MutableLiveData()
+
+    private val _quizType : MutableLiveData<Boolean> = MutableLiveData()
+    val quizType : LiveData<Boolean> get() = _quizType
 
     init {
         _isFinished.value = false
@@ -68,6 +71,7 @@ class QuizViewModel(
             if (_quiz.value?.responseCode == 0){
                 _status.value = true
                 _questionList.value = _quiz.value?.results
+                _quizType.value = type == Constants.type_one
                 convertFromQuizResultToQuestions()
                 nextQuestion()
             }else{
@@ -77,6 +81,16 @@ class QuizViewModel(
             _status.value = false
         }
 
+    }
+
+    fun startAgain(){
+        _isFinished.value = false
+        _correctAnswers.value = 0
+        _currentQuestion.value = 0
+        _correctAnswers.value = 0
+        _movetonext.value = false
+        _cananswer.value = false
+        _questionList2.value = mutableListOf()
     }
 
     suspend fun saveQuiz(quiz: Quiz) = viewModelScope.launch {
@@ -93,37 +107,62 @@ class QuizViewModel(
         for (i in _questionList.value?.indices!!){
             _questionList2.value?.get(i)?.id  = i.toString()
             _questionList2.value?.get(i)?.question = _questionList.value?.get(i)?.question.toString()
-            val answer = listOf(1,2,3,4).random()
-            when(answer){
-                1 -> {
-                    _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.correctAnswer.toString()
-                    _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
-                    _questionList2.value?.get(i)?.optionThree = _questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
-                    _questionList2.value?.get(i)?.optionFour = _questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
-                    _questionList2.value?.get(i)?.correctAnswer = 1
+            val answer: Int = if (_quizType.value == true){
+                listOf(1,2,3,4).random()
+            }else{
+                listOf(1,2).random()
+            }
+            //val answer = listOf(1,2,3,4).random()
+            if (_quizType.value == true){
+                when(answer){
+                    1 -> {
+                        _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.correctAnswer.toString()
+                        _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
+                        _questionList2.value?.get(i)?.optionThree = _questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
+                        _questionList2.value?.get(i)?.optionFour = _questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
+                        _questionList2.value?.get(i)?.correctAnswer = 1
+                    }
+                    2 -> {
+                        _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
+                        _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.correctAnswer.toString()
+                        _questionList2.value?.get(i)?.optionThree = _questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
+                        _questionList2.value?.get(i)?.optionFour = _questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
+                        _questionList2.value?.get(i)?.correctAnswer = 2
+                    }
+                    3 -> {
+                        _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
+                        _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
+                        _questionList2.value?.get(i)?.optionThree = _questionList.value?.get(i)?.correctAnswer.toString()
+                        _questionList2.value?.get(i)?.optionFour = _questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
+                        _questionList2.value?.get(i)?.correctAnswer = 3
+                    }
+                    4 -> {
+                        _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
+                        _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
+                        _questionList2.value?.get(i)?.optionThree = _questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
+                        _questionList2.value?.get(i)?.optionFour = _questionList.value?.get(i)?.correctAnswer.toString()
+                        _questionList2.value?.get(i)?.correctAnswer = 4
+                    }
                 }
-                2 -> {
-                    _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
-                    _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.correctAnswer.toString()
-                    _questionList2.value?.get(i)?.optionThree = _questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
-                    _questionList2.value?.get(i)?.optionFour = _questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
-                    _questionList2.value?.get(i)?.correctAnswer = 2
-                }
-                3 -> {
-                    _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
-                    _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
-                    _questionList2.value?.get(i)?.optionThree = _questionList.value?.get(i)?.correctAnswer.toString()
-                    _questionList2.value?.get(i)?.optionFour = _questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
-                    _questionList2.value?.get(i)?.correctAnswer = 3
-                }
-                4 -> {
-                    _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
-                    _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
-                    _questionList2.value?.get(i)?.optionThree = _questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
-                    _questionList2.value?.get(i)?.optionFour = _questionList.value?.get(i)?.correctAnswer.toString()
-                    _questionList2.value?.get(i)?.correctAnswer = 4
+            }else{
+                when(answer) {
+                    1 -> {
+                        _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.correctAnswer.toString()
+                        _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
+                        _questionList2.value?.get(i)?.optionThree = ""//_questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
+                        _questionList2.value?.get(i)?.optionFour = "" //_questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
+                        _questionList2.value?.get(i)?.correctAnswer = 1
+                    }
+                    2 -> {
+                        _questionList2.value?.get(i)?.optionOne = _questionList.value?.get(i)?.incorrectAnswers?.get(0).toString()
+                        _questionList2.value?.get(i)?.optionTwo = _questionList.value?.get(i)?.correctAnswer.toString()
+                        _questionList2.value?.get(i)?.optionThree = ""//_questionList.value?.get(i)?.incorrectAnswers?.get(1).toString()
+                        _questionList2.value?.get(i)?.optionFour = ""//_questionList.value?.get(i)?.incorrectAnswers?.get(2).toString()
+                        _questionList2.value?.get(i)?.correctAnswer = 2
+                    }
                 }
             }
+
 
         }
 
@@ -132,10 +171,6 @@ class QuizViewModel(
 
     fun endQuiz(){
         _isFinished.value = true
-    }
-
-    fun submit(){
-
     }
 
     fun nextQuestion(){
@@ -172,7 +207,6 @@ class QuizViewModel(
             }
         }
         _cananswer.value = false
-
     }
 
 

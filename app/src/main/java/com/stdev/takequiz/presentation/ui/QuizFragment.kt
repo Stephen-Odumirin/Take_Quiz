@@ -1,6 +1,7 @@
 package com.stdev.takequiz.presentation.ui
 
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -67,6 +69,11 @@ class QuizFragment : Fragment(),View.OnClickListener{
         binding.quizOptionFour.setOnClickListener(this)
         binding.quizNextButton.setOnClickListener(this)
 
+        viewModelShits()
+
+    }
+
+    private fun viewModelShits(){
         viewModel.status.observe(viewLifecycleOwner) {
             if (!it) {
                 MaterialAlertDialogBuilder(requireContext())
@@ -84,11 +91,11 @@ class QuizFragment : Fragment(),View.OnClickListener{
 
         viewModel.currentQuiz.observe(viewLifecycleOwner) {
             clear()
-            binding.quizQuestionText.text = it.question
-            binding.quizOptionOne.text = it.optionOne
-            binding.quizOptionTwo.text = it.optionTwo
-            binding.quizOptionThree.text = it.optionThree
-            binding.quizOptionFour.text = it.optionFour
+            binding.quizQuestionText.text = HtmlCompat.fromHtml(it.question,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.quizOptionOne.text = HtmlCompat.fromHtml(it.optionOne,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.quizOptionTwo.text = HtmlCompat.fromHtml(it.optionTwo,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.quizOptionThree.text = HtmlCompat.fromHtml(it.optionThree,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.quizOptionFour.text = HtmlCompat.fromHtml(it.optionFour,HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
 
         viewModel.currentQuestion.observe(viewLifecycleOwner) {
@@ -103,6 +110,12 @@ class QuizFragment : Fragment(),View.OnClickListener{
             binding.quizNextButton.isEnabled = it
         }
 
+        viewModel.quizType.observe(viewLifecycleOwner){
+            if (!it){
+                binding.quizOptionThree.visibility = View.INVISIBLE
+                binding.quizOptionFour.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private fun clear(){
@@ -113,12 +126,27 @@ class QuizFragment : Fragment(),View.OnClickListener{
         binding.quizOptionFour.background = ContextCompat.getDrawable(requireContext(),R.drawable.option_unselected)
     }
 
+    private fun showResult(){
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Your Result")
+            .setMessage("You answered ${viewModel.correctAnswers.value} question(s) correctly out of $questions questions. \nKeep it up")
+            .setPositiveButton("Try again"){_,_->
+                viewModel.startAgain()
+                viewModelShits()
+            }.setNegativeButton("Exit"){_,_->
+                findNavController().navigateUp()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
     override fun onClick(view: View?) {
         when(view?.id){
             binding.quizNextButton.id -> {
                 if (viewModel.currentQuestion.value == questions){
                     viewModel.endQuiz()
-                    Toast.makeText(requireContext(),"Correct answers ${viewModel.correctAnswers.value}",Toast.LENGTH_SHORT).show()
+                    showResult()
+                    //Toast.makeText(requireContext(),"Correct answers ${viewModel.correctAnswers.value}",Toast.LENGTH_SHORT).show()
                 }else{
                     viewModel.nextQuestion()
                 }

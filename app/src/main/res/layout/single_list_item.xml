@@ -17,6 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="General Knowledge"
+            android:textAlignment="center"
             android:textColor="@color/black_primary"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -33,6 +34,7 @@
             android:text="Play 🎮"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
