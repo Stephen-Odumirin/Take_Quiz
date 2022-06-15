@@ -1,7 +1,7 @@
 # Take_Quiz App
 
 A quiz app built with Trivia API (https://opentdb.com/api.php)
-This app was built with mvvm architecture, dagger-hilt, retrofit, room database, and navigation components.
+This app was built with mvvm architecture, dagger-hilt, retrofit, room database, and navigation components.  
 
 Download the app https://github.com/Stephen-Odumirin/Take_Quiz/blob/master/app/app-release.apk
 
