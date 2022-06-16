@@ -18,49 +18,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-//    @Inject
-//    lateinit var factory: QuizViewModelFactory
-//    lateinit var viewModel : QuizViewModel
     private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        viewModel = ViewModelProvider(this,factory)[QuizViewModel::class.java]
-
-//        viewModel.getQuiz(10,9,"easy","multiple")
-//        viewModel.getQuiz2(10,9,"easy","multiple")
-//
-//        viewModel.quizList.observe(this){
-//            Log.i("Main","1 ${it}")
-//        }
-//
-//        binding.saveBtn.setOnClickListener {
-//            viewModel.quiz.observe(this){
-//                if (it!=null){
-//                    Log.i("Main","2 ${it}")
-//                    lifecycleScope.launch {
-//                        viewModel.saveQuiz(it)
-//                    }
-//                }else{
-//                    Log.i("Main","Null stuff")
-//                }
-//            }
-//        }
-
     }
-
-//    private suspend fun saveQuiz() {
-//        delay(5000)
-//        viewModel.quiz.observe(this){
-//            if (it!=null){
-//                lifecycleScope.launch {
-//
-//                    viewModel.saveQuiz(it)
-//                }
-//            }
-//        }
-//    }
 
 }
